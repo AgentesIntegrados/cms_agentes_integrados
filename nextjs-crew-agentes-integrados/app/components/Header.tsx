@@ -89,6 +89,9 @@ export default function Header() {
               placeholder="Pesquisar..." 
               className="w-full p-2 border rounded" 
             />
+            <Link href="/search" className="block mt-2 text-blue-600 hover:underline">
+              Ir para página de busca
+            </Link>
           </div>
         </div>
       )}

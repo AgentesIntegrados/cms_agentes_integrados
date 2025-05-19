@@ -13,6 +13,40 @@ const indexName = process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME || 'posts';
 const algoliaClient = algoliasearch(algoliaAppId, algoliaApiKey);
 
 /**
+ * Função para importar filmes do dataset de exemplo do Algolia
+ */
+async function importMoviesFromAlgolia() {
+  console.log("Importando filmes do dataset do Algolia...");
+
+  try {
+    // Busca o dataset de filmes de exemplo do Algolia
+    const datasetRequest = await fetch('https://dashboard.algolia.com/api/1/sample_datasets?type=movie');
+    const movies = await datasetRequest.json();
+    
+    // Salva os filmes no índice do Algolia
+    const result = await algoliaClient.saveObjects({ 
+      indexName, 
+      objects: movies 
+    });
+    
+    console.log("Importação de filmes concluída com sucesso!");
+    return {
+      success: true,
+      message: "Filmes importados com sucesso!",
+      taskIDs: result.taskIDs,
+      count: movies.length
+    };
+  } catch (error: any) {
+    console.error("Erro ao importar filmes:", error.message);
+    return {
+      success: false,
+      error: "Erro ao importar filmes",
+      details: error.message,
+    };
+  }
+}
+
+/**
  * Função para realizar a indexação inicial
  * Busca todos os documentos do Sanity e os salva no Algolia
  */
@@ -80,6 +114,13 @@ export async function POST(request: Request) {
     // Realiza a indexação inicial se solicitado
     if (initialIndex) {
       const response = await performInitialIndexing();
+      return NextResponse.json(response);
+    }
+    
+    // Importa filmes do dataset do Algolia se solicitado
+    const importMovies = searchParams.get("importMovies") === "true";
+    if (importMovies) {
+      const response = await importMoviesFromAlgolia();
       return NextResponse.json(response);
     }
 

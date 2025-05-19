@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "typegen": "sanity typegen generate",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "import-movies": "node scripts/import-movies.js"
   },
   "dependencies": {
     "@sanity/image-url": "^1.1.0",
