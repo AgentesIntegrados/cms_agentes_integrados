@@ -84,14 +84,27 @@ export default function Header() {
       {searchOpen && (
         <div className="fixed top-24 left-0 right-0 bg-white border-b border-gray-200 p-4 shadow-lg z-40">
           <div className="container mx-auto px-4">
-            <input 
-              type="text" 
-              placeholder="Pesquisar..." 
-              className="w-full p-2 border rounded" 
-            />
-            <Link href="/search" className="block mt-2 text-blue-600 hover:underline">
-              Ir para página de busca
-            </Link>
+            <form 
+              onSubmit={(e) => {
+                e.preventDefault();
+                const input = e.currentTarget.querySelector('input');
+                if (input?.value) {
+                  window.location.href = `/search?q=${encodeURIComponent(input.value)}`;
+                }
+              }}
+            >
+              <input 
+                type="text" 
+                placeholder="Pesquisar..." 
+                className="w-full p-3 border rounded focus:outline-none focus:border-blue-500" 
+              />
+              <button 
+                type="submit" 
+                className="mt-2 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors"
+              >
+                Buscar
+              </button>
+            </form>
           </div>
         </div>
       )}

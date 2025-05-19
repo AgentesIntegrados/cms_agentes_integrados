@@ -2,10 +2,10 @@
 
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
-import { InstantSearch, SearchBox, Hits, Configure, Pagination } from 'react-instantsearch';
+import { InstantSearch, Configure, Pagination } from 'react-instantsearch';
 import { liteClient as algoliasearch } from 'algoliasearch/lite';
 import BreakingNews from '../components/BreakingNews';
-import SearchResult from '../components/SearchResult';
+import CustomHits from '../components/CustomHits';
 
 // Configuração do cliente Algolia
 const searchClient = algoliasearch(
@@ -35,47 +35,30 @@ function SearchContent() {
             }
           }}
         >
-          <Configure hitsPerPage={10} />
-          
-          {/* Barra de busca */}
-          <div className="mb-8">
-            <SearchBox
-              placeholder="Digite sua busca..."
-              classNames={{
-                root: 'relative',
-                form: 'relative',
-                input: 'w-full border p-3 pl-10 pr-24 rounded border-gray-300 focus:border-blue-500 focus:outline-none',
-                submit: 'absolute left-3 top-1/2 -translate-y-1/2',
-                reset: 'absolute right-14 top-1/2 -translate-y-1/2',
-                submitIcon: 'w-5 h-5 text-gray-400',
-                resetIcon: 'w-4 h-4 text-gray-400',
-              }}
-            />
-          </div>
+          <Configure 
+            hitsPerPage={10}
+            attributesToRetrieve={['title', 'overview', 'poster_path', 'objectID']}
+          />
 
           {/* Resultados */}
-          <div className="space-y-4">
-            <Hits 
-              hitComponent={SearchResult}
-              classNames={{
-                root: 'mt-6',
-                list: 'space-y-4',
-                item: 'list-none',
-              }}
-            />
-          </div>
+          <CustomHits />
 
           {/* Paginação */}
-          <div className="mt-8">
+          <div className="mt-6">
             <Pagination
               classNames={{
-                root: 'flex flex-row items-center justify-center space-x-2',
-                list: 'flex flex-row items-center space-x-2',
-                item: 'px-3 py-2 border rounded hover:bg-gray-50 cursor-pointer',
-                selectedItem: 'px-3 py-2 border rounded bg-blue-600 text-white',
-                disabledItem: 'px-3 py-2 border rounded opacity-50 cursor-not-allowed',
-                link: 'block w-full h-full',
+                root: 'flex items-center justify-center gap-1',
+                list: 'flex items-center gap-1',
+                item: 'px-2 py-1 text-sm border rounded hover:bg-gray-50 cursor-pointer transition-colors',
+                selectedItem: 'px-2 py-1 text-sm border rounded bg-blue-600 text-white border-blue-600',
+                disabledItem: 'px-2 py-1 text-sm border rounded opacity-40 cursor-not-allowed',
+                link: 'block',
               }}
+              showFirst={false}
+              showLast={false}
+              showPrevious={true}
+              showNext={true}
+              padding={2}
             />
           </div>
         </InstantSearch>
