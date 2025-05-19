@@ -117,9 +117,3 @@ A abordagem híbrida oferece o melhor dos dois mundos:
 - Relevância intuitiva para o usuário
 
 Resultado: Buscas por títulos exatos agora aparecem primeiro, melhorando significativamente a experiência do usuário.
-
----
-
-**Documento criado em**: 19/05/2025  
-**Autor**: Claude Code Assistant  
-**Status**: Implementado e Funcional
